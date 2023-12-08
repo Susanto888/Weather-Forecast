@@ -1,0 +1,218 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+body {
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: url('/image/background.png');
+}
+.card {
+    width: 300px;
+    height: 550px;
+    border-radius: 20px;
+    box-shadow: 0px 5px 10px rgba(0,0,0,0.6);
+}
+.top-box {
+    width: 100%;
+    display: flex;
+    margin-top: 5px;
+    text-align: center;
+}
+.background {
+    width: 300px;
+    height: 550px;
+    border-radius: 20px;
+    z-index: -1;
+    position: absolute;
+    bottom: 46px;
+    transition: 0.3s;
+}
+.search-box {
+    width: 300px;
+    position: relative;
+    align-items: center;
+}
+.input-search {
+    width: 20px;
+    height: 20px;
+    border-style: none;
+    font-size: 12px;
+    outline: none;
+    transition: all, 5s ease-in-out ;
+    color: transparent;
+    border-radius: 20px;
+    background-color: transparent;
+}
+.input-search::placeholder {
+    color: transparent;
+}
+.btn-search {
+    width: 20px;
+    height: 20px;
+    border-style: none;
+    border-radius: 20px;
+    font-size: 12px;
+    color: white;
+    position: absolute;
+    outline: none;
+    cursor: pointer;
+    margin-left: 3px;
+    background-color: transparent;
+}
+.btn-search:focus ~ .input-search {
+    width: 150px;
+    background-color: transparent;
+    margin-left: 2px;
+    padding-left: 20px;
+    transition: all 500ms cubic-bezier(.59, 0, .19, 1);
+    box-shadow: -36px 13px 26px -6px rgba(0,0,0,0.26);
+    -webkit-box-shadow: -36px 13px 26px -6px rgba(0,0,0,0.26);
+    -moz-box-shadow: -36px 13px 26px -6px rgba(0,0,0,0.26);
+}
+.btn-search:focus ~ .input-search::placeholder {
+    color: #E9E9E9;
+}
+.input-search:focus {
+    width: 150px;
+    background-color: transparent;
+    color: whitesmoke;
+    margin-left: 2px;
+    padding-left: 20px;
+    transition: all 500ms cubic-bezier(.58, 0, .19, 1);
+    box-shadow: -36px 13px 26px -6px rgba(0,0,0,0.25);
+    -webkit-box-shadow: -36px 13px 26px -6px rgba(0,0,0,0.26);
+    -moz-box-shadow: -36px 13px 26px -6px rgba(0,0,0,0.26);
+}
+.condition-box {
+    width: 300px;
+    height: 250px;
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+    margin-bottom: 20px;
+}
+.condition {
+    width: 100px;
+    display: flex;
+    flex-direction: column;
+    margin-left: 20px;
+}
+.condition span {
+    margin-bottom: 10px;
+    color: white;
+    font-family: 'Nunito', sans-serif;
+    font-size: 12px;
+    display: flex;
+    justify-content: space-between;
+}
+.humid {
+    margin-top: 20px;
+}
+.loc {
+    width: 250px;
+    height: 30px;
+    font-size: 24px;
+    margin-bottom: 20px;
+    color: white;
+    font-family: 'Nunito', sans-serif;
+}
+.temp-box {
+    margin-right: 20px;
+    margin-top: 60px;
+}
+.temperature {
+    text-align: center;
+    margin-bottom: 5px;
+}
+.temperature span {
+    display: inline-flex;
+    font-size: 4rem;
+    font-family: 'Roboto', sans-serif;
+    color: white;
+}
+.status small {
+    color: white;
+    font-family: 'Roboto', sans-serif;
+    margin-right: 5px;
+
+}
+.deg {
+    font-weight: bold;
+    font-size: 25px;
+    margin-top: 12px;
+}
+.card-bottom {
+    display: flex;
+    flex-direction: column;
+    margin: 10px 20px 0 20px;
+}
+.card-bottom span:first-child {
+    margin-bottom: 5px;
+    color: white;
+    font-family: 'Nunito', sans-serif;
+}
+.condition-list {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 5px;
+}
+.condition-icon {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+}
+.condition-icon span {
+    font-family: 'Nunito', sans-serif;
+}
+.icon1 {
+    margin-top: -5px;
+}
+.humid-prog, .wind-prog, 
+.aqi-prog {
+    position: relative;
+    height: 40px;
+    width: 40px;
+    border-radius: 50%;
+    background: conic-gradient( #66CCFF 37deg, white 0deg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.humid-prog::before, .wind-prog::before,
+.aqi-prog::before {
+    content: "";
+    position: absolute;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: #CECECE;
+}
+.humid-prog {
+    margin-left: 5px;
+}
+.wind-prog {
+    margin-left: 1px;
+}
+.humid-value, .wind-value,
+.aqi-value {
+    position: relative;
+    margin-top: 5px;
+}
+.day {
+    display: flex;
+    justify-content: space-between;
+}
+.day span {
+    display: inline-flex;
+    color: white;
+    font-family: 'Nunito', sans-serif;
+}
+.degree {
+    font-weight: bold;
+    font-size: 10px;
+    margin-top: 2px;
+}

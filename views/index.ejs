@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@900&family=Roboto:wght@900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/style.css">
+    <title>Weather App</title>
+</head>
+<body>
+    <div class="card">
+        <div class="card-top">
+            <div class="top-box">
+                <div id="background" class="background"></div>
+                <div class="search-box">
+                    <form method="post" action="/" onsubmit="return validateForm()">
+                        <button class="btn-search">
+                            <i class="fas fa-search"></i>
+                        </button>
+                        <input type="text" name="search" class="input-search" placeholder="Search your location...">
+                    </form>
+                </div>
+            </div>
+            <div class="condition-box">
+                <div class="condition">
+                    <strong class="loc">
+                        <%= loc %>
+                    </strong>
+                    <span class="humid">Humid <strong><%= humid %>%</strong></span>
+                    <span class="wind">Wind <strong><%= wind %><small>km/h</small><strong></strong></span>
+                    <span class="air">AQI <strong><small><%= aqi %>μg</small></strong></span>
+                </div>
+                <div class="temp-box">
+                    <div class="temperature">
+                        <span><%= celcTemp %><small class="deg">&deg;C</small></span>
+                        <div class="status">
+                            <small><%=status%></small>
+                            <small><%= max %>&deg;/<%= min %>&deg;</small>
+                        </div>
+                    </div>
+                    <div class="temperature">
+                        <span><%= fahrenTemp %><small class="deg">&deg;F</small></span>
+                        <div class="status">
+                            <small><%= fahrenStats %></small>
+                            <small><%= fahrenMax %>&deg;/<%= fahrenMin %>&deg;</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card-bottom">
+            <span><%= loc %></span>
+            <div class="condition-list">
+                <div class="condition-icon">
+                    <span>Status</span>
+                    <img src=<%= statusIcon %> alt="round" class="icon1">
+                </div>
+                <div class="condition-icon">
+                    <span>Humid</span>
+                    <div class="humid-prog">
+                        <span class="humid-value"></span>
+                    </div>
+                </div>
+                <div class="condition-icon">
+                    <span>Wind</span>
+                    <div class="wind-prog">
+                        <span class="wind-value"></span>
+                    </div>
+                </div>
+                <div class="condition-icon">
+                    <span>AQI</span>
+                    <div class="aqi-prog">
+                        <span class="aqi-value"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="day">
+                <span>Today</span>
+                <span><%= todayForecastMax %><small class="degree">&deg;C</small>/<%= todayForecastMin %><small class="degree">&deg;C</small></span>
+            </div>
+            <div class="day">
+                <span>Tomorrow</span>
+                <span><%= tomorrowForecastMax %><small class="degree">&deg;C</small>/<%= tomorrowForecastMin %><small class="degree">&deg;C</small></span>
+            </div>
+            <div class="day">
+                <span><%= dayAfter %></span>
+                <span><%= dayAfterMax %><small class="degree">&deg;C</small>/<%= dayAfterMin %><small class="degree">&deg;C</small></span>
+            </div>
+            <div class="day">
+                <span><%= fourthDay %></span>
+                <span><%= fourthDayMax %><small class="degree">&deg;C</small>/<%= fourthDayMin %><small class="degree">&deg;C</small></span>
+            </div>
+            <div class="day">
+                <span><%= fifthDay %></span>
+                <span><%= fifthDayMax %><small class="degree">&deg;C</small>/<%= fifthDayMin %><small class="degree">&deg;C</small></span>
+            </div>
+        </div>
+    </div>
+    <script src="/function.js"></script>
+    <script>
+        window.onload = function() {
+            let stats = "<%= status %>";
+
+            let backgroundDiv = document.getElementById('background');
+
+            if (stats === 'Clouds') {
+                backgroundDiv.style.backgroundImage = "url('/image/cloudy.png')";
+            } else if (stats === 'Clear') {
+                backgroundDiv.style.backgroundImage = "url('/image/clearSky.png')";
+            } else if (stats === 'Snow') {
+                backgroundDiv.style.backgroundImage = "url('/image/snow.png')";
+            } else if (stats === 'Rain') {
+                backgroundDiv.style.backgroundImage = "url('/image/rain.png')";
+            } else if (stats === 'Drizzle') {
+                backgroundDiv.style.backgroundImage = "url('/image/drizzly.png')";
+            } else if (stats === 'Thunderstorm') {
+                backgroundDiv.style.backgroundImage = "url('/image/thunderstorm.png')";
+            } else if (stats === 'Mist' || stats === 'Smoke' || stats === 'Haze' || stats === 'Dust' || stats === 'Fog' || stats === 'Sand' || stats === 'Ash' || stats === 'Squall' || stats === 'Tornado') {
+                backgroundDiv.style.backgroundImage = "url('/image/haze.gif')";
+            }
+        }
+
+        let humidProgress = document.querySelector('.humid-prog');
+        let windProgress = document.querySelector('.wind-prog');
+        let aqiProgress = document.querySelector('.aqi-prog')
+        let humidValue = document.querySelector('.humid-value');
+        let windValue = document.querySelector('.wind-value');
+        let aqiValue = document.querySelector('.aqi-value');
+        
+        let humidStartValue = 0;
+        let windStartValue = 0;
+        let aqiStartValue = 0;
+        let humidEndValue = '<%= humid %>';
+        let windEndValue = '<%= wind %>';
+        let aqiEndValue = '<%= aqi %>';
+        let speed = 10;
+
+        let humidProg = setInterval(() => {
+            humidStartValue++;
+
+            humidValue.textContent = `${humidStartValue}`
+            humidProgress.style.background = `conic-gradient( #66CCFF ${humidStartValue * 3.6}deg, #fff 0deg)`
+            windProgress.style.background = `conic-gradient( #99FF99 ${windStartValue * 2.7}deg, #fff 0deg)`
+
+                if(humidStartValue == humidEndValue){
+                    clearInterval(humidProg)
+                } 
+        }, speed);
+        let windProg = setInterval(() => {
+            windStartValue++;
+
+            windValue.textContent = `${humidStartValue}`
+            windProgress.style.background = `conic-gradient( #99FF99 ${windStartValue * 2.7}deg, #fff 0deg)`
+
+                if(windStartValue == windEndValue){
+                    clearInterval(windProg)
+                } 
+        }, speed);
+        let aqiProg = setInterval(() => {
+            aqiStartValue++;
+
+            aqiValue.textContent = `${aqiStartValue}`
+            if (aqiEndValue == 1){
+                aqiProgress.style.background = `conic-gradient( #99FF99 ${aqiStartValue * 72}deg, #fff 0deg)`
+            } else if (aqiEndValue == 2){
+                aqiProgress.style.background = `conic-gradient( #FFF809 ${aqiStartValue * 72}deg, #fff 0deg)`
+            } else if (aqiEndValue == 3){
+                aqiProgress.style.background = `conic-gradient( #FFAE09 ${aqiStartValue * 72}deg, #fff 0deg)`
+            } else if (aqiEndValue == 4){
+                aqiProgress.style.background = `conic-gradient( #CE3E1A ${aqiStartValue * 72}deg, #fff 0deg)`
+            } else if (aqiEndValue == 5){
+                aqiProgress.style.background = `conic-gradient( #801ACE ${aqiStartValue * 72}deg, #fff 0deg)`
+            }
+
+                if(aqiStartValue >= aqiEndValue){
+                    clearInterval(aqiProg)
+                } 
+        }, 100);
+
+    </script>
+</body>
+</html>
